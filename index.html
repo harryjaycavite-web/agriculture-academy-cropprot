@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Agriculture Academy | Quick AgLE Self-Test — Crop Protection</title>
+<style>
+  :root{
+    --primary:#3f6b27;
+    --primary-dark:#27461a;
+    --primary-light:#e9f1e3;
+    --accent:#f9a825;
+    --accent-dark:#e08c00;
+    --bg:#f6f8f2;
+    --card:#ffffff;
+    --text:#20291c;
+    --muted:#62705d;
+    --border:#dce6d5;
+    --success:#2e7d32;
+    --success-bg:#e6f4ea;
+    --error:#c62828;
+    --error-bg:#fdeaea;
+    --danger:#d84315;
+    --radius-lg:18px;
+    --radius-md:12px;
+    --radius-sm:8px;
+    --shadow:0 6px 20px rgba(45,80,28,.08);
+    --shadow-sm:0 2px 8px rgba(45,80,28,.06);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,#f6f8f2 0%,#edf3e8 100%);color:var(--text);min-height:100vh;display:flex;justify-content:center;}
+  .app{width:100%;max-width:920px;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);}
+  .topbar{position:sticky;top:0;z-index:20;background:rgba(246,248,242,.94);backdrop-filter:blur(6px);padding:14px 20px 10px;border-bottom:1px solid var(--border);}
+  .brand{font-weight:800;font-size:1.05rem;color:var(--primary-dark);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .progress-wrap{display:flex;align-items:center;gap:10px;}
+  .progress-track{flex:1;height:8px;background:var(--border);border-radius:99px;overflow:hidden;}
+  .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:99px;transition:width .4s ease;}
+  #progressLabel{font-size:.78rem;color:var(--muted);white-space:nowrap;font-weight:600;}
+
+  /* Extra clearance protects Submit, Yes/No, and feedback from fixed mobile navigation */
+  main{flex:1;padding:20px;padding-bottom:190px;}
+  .slide{display:none;animation:fadeIn .35s ease;}
+  .slide.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .intro-card{background:var(--card);border-radius:var(--radius-lg);padding:36px 26px;text-align:center;box-shadow:var(--shadow);margin-top:10px;}
+  .intro-emoji{font-size:2.6rem;margin-bottom:6px;}
+  .intro-card h1{font-size:1.45rem;margin:6px 0 10px;color:var(--primary-dark);}
+  .intro-card p{color:var(--muted);line-height:1.6;font-size:.98rem;max-width:550px;margin:0 auto 10px;}
+  .badge-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:18px 0 26px;}
+  .badge{background:var(--primary-light);color:var(--primary-dark);font-weight:700;padding:8px 14px;border-radius:99px;font-size:.82rem;border:1px solid #cbe0c0;}
+  .domain-preview{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:20px 0;text-align:left;}
+  .domain-chip{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:.8rem;font-weight:600;color:var(--text);}
+  .domain-chip span{display:block;font-size:.7rem;color:var(--muted);font-weight:500;margin-top:2px;}
+
+  .btn{border:none;border-radius:var(--radius-md);padding:14px 22px;font-size:1rem;font-weight:700;cursor:pointer;min-height:50px;transition:transform .12s ease,box-shadow .12s ease,opacity .12s;touch-action:manipulation;}
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--primary);color:#fff;box-shadow:0 4px 12px rgba(63,107,39,.3);}
+  .btn-primary:hover{background:var(--primary-dark);}
+  .btn-accent{background:var(--accent);color:#3a2a00;box-shadow:0 4px 12px rgba(249,168,37,.35);}
+  .btn-accent:hover{background:var(--accent-dark);}
+  .btn-ghost{background:transparent;color:var(--muted);border:2px solid var(--border);}
+  .btn-ghost:hover{border-color:var(--primary);color:var(--primary-dark);}
+  .btn-block{width:100%;}
+  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+  .hidden{display:none!important;}
+
+  .domain-header{margin-bottom:14px;}
+  .domain-tag{display:inline-block;background:var(--primary-light);color:var(--primary-dark);font-size:.75rem;font-weight:800;letter-spacing:.03em;padding:5px 10px;border-radius:99px;text-transform:uppercase;margin-bottom:8px;}
+  .domain-header h2{margin:0;font-size:1.25rem;color:var(--text);}
+  .domain-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:16px;}
+  @media(min-width:760px){.domain-grid{grid-template-columns:1fr 1fr;}}
+  .review-panel,.visual-panel,.quiz-card{background:var(--card);border-radius:var(--radius-lg);padding:18px 18px 20px;box-shadow:var(--shadow-sm);border:1px solid var(--border);}
+  .umbrella{margin:0 0 12px;font-size:1.02rem;color:var(--primary-dark);font-weight:800;padding-bottom:8px;border-bottom:2px dashed var(--border);}
+  .subtopics{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;}
+  .subtopics li{font-size:.9rem;line-height:1.5;color:var(--text);padding-left:22px;position:relative;}
+  .subtopics li::before{content:"🛡️";position:absolute;left:0;top:0;font-size:.83rem;}
+  .subtopics li strong{color:var(--primary-dark);}
+
+  .visual-panel h4{margin:0 0 10px;font-size:.9rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.02em;}
+  .visual-panel svg{width:100%;height:auto;display:block;background:var(--bg);border-radius:var(--radius-sm);}
+  .visual-panel input[type="range"]{width:100%;margin-top:12px;accent-color:var(--primary);height:26px;}
+  .visual-readout{font-size:.82rem;color:var(--text);background:var(--primary-light);border-radius:var(--radius-sm);padding:9px 11px;margin-top:10px;line-height:1.5;min-height:20px;}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+  .term-chip{background:var(--primary);color:#fff;font-weight:800;font-size:.82rem;padding:10px 14px;border-radius:99px;cursor:pointer;user-select:none;transition:transform .12s ease;}
+  .term-chip:active{transform:scale(.96);}
+  .term-tooltip{display:none;margin-top:10px;background:var(--primary-light);color:var(--text);border-radius:var(--radius-sm);padding:10px 12px;font-size:.82rem;font-weight:500;line-height:1.5;}
+  .term-tooltip.show{display:block;}
+
+  .question-text{font-size:1rem;font-weight:700;margin:0 0 14px;line-height:1.5;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .option-card{background:var(--bg);border:2px solid var(--border);border-radius:var(--radius-md);padding:14px 16px;font-size:.92rem;cursor:pointer;min-height:48px;display:flex;align-items:flex-start;gap:10px;transition:border-color .15s ease,background .15s ease;line-height:1.4;}
+  .option-card:active{transform:scale(.99);}
+  .option-letter{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;font-weight:800;font-size:.8rem;display:flex;align-items:center;justify-content:center;}
+  .option-card.selected{border-color:var(--primary);background:var(--primary-light);font-weight:700;}
+  .option-card.disabled{cursor:not-allowed;pointer-events:none;}
+  .option-card.correct-answer{border-color:var(--success);background:var(--success-bg);font-weight:700;}
+  .option-card.correct-answer .option-letter{background:var(--success);}
+  .option-card.wrong-answer{border-color:var(--error);background:var(--error-bg);font-weight:700;}
+  .option-card.wrong-answer .option-letter{background:var(--error);}
+  .action-row{margin-top:16px;}
+  .confirm-box{margin-top:14px;background:#fff8e6;border:1px solid #f3d98a;border-radius:var(--radius-md);padding:14px 16px;}
+  .confirm-box p{margin:0 0 12px;font-weight:700;font-size:.9rem;}
+  .confirm-actions{display:flex;gap:10px;}
+  .confirm-actions .btn{flex:1;padding:11px;min-height:44px;}
+  .feedback{margin-top:16px;border-radius:var(--radius-md);padding:14px 16px;}
+  .feedback-correct{background:var(--success-bg);border:1px solid #b6dfc0;}
+  .feedback-wrong{background:var(--error-bg);border:1px solid #f0bcbc;}
+  .feedback-title{margin:0 0 6px;font-weight:800;font-size:1rem;}
+  .feedback p{margin:0 0 8px;font-size:.9rem;line-height:1.5;}
+  .calc-box{margin-top:8px;background:rgba(255,255,255,.6);border-radius:var(--radius-sm);padding:10px 12px;font-size:.85rem;line-height:1.8;font-family:"SFMono-Regular",Consolas,monospace;}
+
+  .score-card{background:var(--card);border-radius:var(--radius-lg);padding:32px 22px;text-align:center;box-shadow:var(--shadow);margin-top:6px;}
+  .score-number{font-size:3rem;font-weight:900;color:var(--primary-dark);margin:8px 0;}
+  .motivation{font-size:.98rem;color:var(--text);max-width:500px;margin:6px auto 22px;line-height:1.6;}
+  .rec-title{font-size:.9rem;font-weight:800;text-transform:uppercase;letter-spacing:.02em;color:var(--muted);margin:22px 0 12px;text-align:left;}
+  #recommendations{display:flex;flex-direction:column;gap:10px;text-align:left;}
+  .rec-item{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px 14px;font-size:.87rem;line-height:1.5;}
+  .rec-item strong{color:var(--primary-dark);}
+  .all-correct{background:var(--success-bg);border-radius:var(--radius-md);padding:14px;font-weight:700;}
+
+  .navbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:920px;background:rgba(246,248,242,.96);backdrop-filter:blur(6px);border-top:1px solid var(--border);padding:12px 20px calc(12px + env(safe-area-inset-bottom));display:flex;gap:10px;z-index:20;}
+  .navbar .btn{flex:1;}
+  .toast{position:fixed;bottom:140px;left:50%;transform:translateX(-50%) translateY(20px);background:#2b2b2b;color:#fff;padding:12px 20px;border-radius:99px;font-size:.85rem;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease;z-index:50;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.2);}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  @media(max-width:480px){.intro-card h1{font-size:1.2rem}.score-number{font-size:2.3rem}main{padding:14px;padding-bottom:200px}.toast{white-space:normal;text-align:center;max-width:88%}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="brand">🛡️ Agriculture Academy</div>
+    <div class="progress-wrap"><div class="progress-track"><div class="progress-bar" id="progressBar"></div></div><span id="progressLabel">Intro</span></div>
+  </div>
+
+  <main id="slides">
+    <section class="slide active" id="slide-0">
+      <div class="intro-card">
+        <div class="intro-emoji">🐛</div>
+        <h1>Quick AgLE Self-Test — Crop Protection</h1>
+        <p>A rapid diagnostic covering six core Crop Protection domains of the Agriculturist Licensure Examination (AgLE): Plant Pathology, Entomology, Weed Science, Vertebrate &amp; Other Non-Insect Pests, Pesticide Toxicology &amp; Application, and Integrated Pest Management (IPM). Each domain includes a review, dynamic visual, and one exam-style question.</p>
+        <div class="badge-row"><span class="badge">⏱ 10–15 minutes</span><span class="badge">📝 6 questions</span><span class="badge">🔁 1 free retake</span></div>
+        <div class="domain-preview">
+          <div class="domain-chip">1. Plant Pathology<span>Disease triangle &amp; symptoms</span></div>
+          <div class="domain-chip">2. Entomology<span>Insects &amp; life cycles</span></div>
+          <div class="domain-chip">3. Weed Science<span>Competition &amp; control</span></div>
+          <div class="domain-chip">4. Non-Insect Pests<span>Rodents, mites &amp; nematodes</span></div>
+          <div class="domain-chip">5. Pesticides<span>Toxicology &amp; calibration</span></div>
+          <div class="domain-chip">6. IPM<span>EIL &amp; decision-making</span></div>
+        </div>
+        <button class="btn btn-primary btn-block" id="startBtn">Start Quiz →</button>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-1">
+      <div class="domain-header"><span class="domain-tag">Domain 1 of 6</span><h2>Plant Pathology</h2></div>
+      <div class="domain-grid">
+        <div class="review-panel"><h3 class="umbrella">🔺 The Plant Disease Triangle</h3><ul class="subtopics"><li><strong>Susceptible Host</strong> — a vulnerable cultivar, wounded tissue, or stressed plant provides the infection site.</li><li><strong>Virulent Pathogen</strong> — fungi, bacteria, viruses, nematodes, and phytoplasmas each cause characteristic symptoms.</li><li><strong>Conducive Environment</strong> — temperature, leaf wetness, humidity, and inoculum load determine epidemic development.</li></ul></div>
+        <div class="visual-panel"><h4>Interactive: Disease Triangle Risk</h4><svg viewBox="0 0 300 160"><polygon points="150,15 25,135 275,135" fill="#e9f1e3" stroke="#3f6b27" stroke-width="2"/><text x="130" y="32" font-size="12" fill="#27461a" font-weight="700">PATHOGEN</text><text x="30" y="150" font-size="12" fill="#27461a" font-weight="700">HOST</text><text x="196" y="150" font-size="12" fill="#27461a" font-weight="700">ENVIRONMENT</text><circle id="diseaseDot" cx="150" cy="88" r="12" fill="#f9a825" stroke="#27461a" stroke-width="2"/></svg><input type="range" id="diseaseSlider" min="0" max="100" value="30"><p class="visual-readout" id="diseaseReadout"></p></div>
+      </div>
+      <div class="quiz-card" id="quiz-0"><p class="question-text" id="qtext-0"></p><div class="options" id="options-0"></div><div class="action-row"><button class="btn btn-accent hidden" id="submitBtn-0" data-domain="0">Submit Answer</button></div><div class="confirm-box hidden" id="confirmBox-0"><p>Are you sure you want to submit this answer?</p><div class="confirm-actions"><button class="btn btn-primary" id="yesBtn-0" data-domain="0">Yes</button><button class="btn btn-ghost" id="noBtn-0" data-domain="0">No</button></div></div><div class="feedback hidden" id="feedback-0"></div></div>
+    </section>
+
+    <section class="slide" id="slide-2">
+      <div class="domain-header"><span class="domain-tag">Domain 2 of 6</span><h2>Entomology</h2></div>
+      <div class="domain-grid">
+        <div class="review-panel"><h3 class="umbrella">🐞 Insect Biology &amp; Pest Identification</h3><ul class="subtopics"><li><strong>Complete Metamorphosis</strong> — egg → larva → pupa → adult; larvae and adults often have different food habits.</li><li><strong>Incomplete Metamorphosis</strong> — egg → nymph → adult; nymphs resemble miniature adults and share habitat/food.</li><li><strong>Mouthparts &amp; Damage</strong> — chewing insects remove tissue; piercing-sucking insects cause chlorosis, curl, and virus transmission.</li></ul></div>
+        <div class="visual-panel"><h4>Interactive: Insect Life Cycle</h4><div class="chip-row" id="insectChips"></div><div class="term-tooltip" id="insectTooltip"></div></div>
+      </div>
+      <div class="quiz-card" id="quiz-1"><p class="question-text" id="qtext-1"></p><div class="options" id="options-1"></div><div class="action-row"><button class="btn btn-accent hidden" id="submitBtn-1" data-domain="1">Submit Answer</button></div><div class="confirm-box hidden" id="confirmBox-1"><p>Are you sure you want to submit this answer?</p><div class="confirm-actions"><button class="btn btn-primary" id="yesBtn-1" data-domain="1">Yes</button><button class="btn btn-ghost" id="noBtn-1" data-domain="1">No</button></div></div><div class="feedback hidden" id="feedback-1"></div></div>
+    </section>
+
+    <section class="slide" id="slide-3">
+      <div class="domain-header"><span class="domain-tag">Domain 3 of 6</span><h2>Weed Science</h2></div>
+      <div class="domain-grid">
+        <div class="review-panel"><h3 class="umbrella">🌿 Weed Competition &amp; Management</h3><ul class="subtopics"><li><strong>Critical Period of Weed Control</strong> — the crop stage when weed removal prevents unacceptable yield loss.</li><li><strong>Herbicide Selectivity</strong> — selective herbicides suppress target weeds while sparing the crop; non-selective herbicides injure most plants.</li><li><strong>Integrated Weed Management</strong> — combines prevention, mechanical control, cultural practices, and judicious herbicide use.</li></ul></div>
+        <div class="visual-panel"><h4>Interactive: Crop–Weed Competition</h4><svg viewBox="0 0 300 145"><rect x="20" y="105" width="260" height="20" fill="#8d6e63"/><g id="cropPlants"></g><g id="weedPlants"></g><text x="25" y="18" font-size="11" fill="#62705d">Crop biomass = green | Weed pressure = red</text></svg><input type="range" id="weedSlider" min="0" max="100" value="20"><p class="visual-readout" id="weedReadout"></p></div>
+      </div>
+      <div class="quiz-card" id="quiz-2"><p class="question-text" id="qtext-2"></p><div class="options" id="options-2"></div><div class="action-row"><button class="btn btn-accent hidden" id="submitBtn-2" data-domain="2">Submit Answer</button></div><div class="confirm-box hidden" id="confirmBox-2"><p>Are you sure you want to submit this answer?</p><div class="confirm-actions"><button class="btn btn-primary" id="yesBtn-2" data-domain="2">Yes</button><button class="btn btn-ghost" id="noBtn-2" data-domain="2">No</button></div></div><div class="feedback hidden" id="feedback-2"></div></div>
+    </section>
+
+    <section class="slide" id="slide-4">
+      <div class="domain-header"><span class="domain-tag">Domain 4 of 6</span><h2>Vertebrate &amp; Other Non-Insect Pests</h2></div>
+      <div class="domain-grid">
+        <div class="review-panel"><h3 class="umbrella">🐀 Beyond Insect Pests</h3><ul class="subtopics"><li><strong>Vertebrate Pests</strong> — rodents, birds, bats, and wild pigs damage crops through feeding, burrowing, and contamination.</li><li><strong>Mites</strong> — arachnids with four pairs of legs as adults; common symptoms include stippling, bronzing, and webbing.</li><li><strong>Plant-Parasitic Nematodes</strong> — microscopic roundworms that damage roots, reducing water and nutrient uptake.</li></ul></div>
+        <div class="visual-panel"><h4>Interactive: Tap a Non-Insect Pest</h4><div class="chip-row" id="nonInsectChips"></div><div class="term-tooltip" id="nonInsectTooltip"></div></div>
+      </div>
+      <div class="quiz-card" id="quiz-3"><p class="question-text" id="qtext-3"></p><div class="options" id="options-3"></div><div class="action-row"><button class="btn btn-accent hidden" id="submitBtn-3" data-domain="3">Submit Answer</button></div><div class="confirm-box hidden" id="confirmBox-3"><p>Are you sure you want to submit this answer?</p><div class="confirm-actions"><button class="btn btn-primary" id="yesBtn-3" data-domain="3">Yes</button><button class="btn btn-ghost" id="noBtn-3" data-domain="3">No</button></div></div><div class="feedback hidden" id="feedback-3"></div></div>
+    </section>
+
+    <section class="slide" id="slide-5">
+      <div class="domain-header"><span class="domain-tag">Domain 5 of 6</span><h2>Pesticide Toxicology &amp; Application</h2></div>
+      <div class="domain-grid">
+        <div class="review-panel"><h3 class="umbrella">🧴 Safe &amp; Effective Pesticide Use</h3><ul class="subtopics"><li><strong>Toxicity &amp; LD₅₀</strong> — the dose that kills 50% of test animals; lower LD₅₀ means higher acute toxicity.</li><li><strong>Formulation &amp; Dilution</strong> — correct mixing maintains label-recommended dose, safety, and target efficacy.</li><li><strong>Application Safety</strong> — calibrated equipment, PPE, label compliance, and observing pre-harvest intervals are essential.</li></ul></div>
+        <div class="visual-panel"><h4>Interactive: Sprayer Dilution Calculator</h4><svg viewBox="0 0 300 130"><rect x="35" y="25" width="90" height="80" rx="10" fill="#d5e8d0" stroke="#3f6b27" stroke-width="2"/><path d="M160,65 L245,65" stroke="#62705d" stroke-width="4"/><path d="M245,65 L233,57 M245,65 L233,73" stroke="#62705d" stroke-width="4"/><rect x="255" y="35" width="25" height="60" rx="5" fill="#e6f4ea" stroke="#3f6b27" stroke-width="2"/><text x="49" y="58" font-size="12" fill="#27461a" font-weight="700">Tank</text><text id="tankLabel" x="50" y="80" font-size="13" fill="#27461a" font-weight="700">200 L</text><text x="220" y="27" font-size="10" fill="#62705d">Concentrate</text></svg><input type="range" id="dilutionSlider" min="50" max="300" value="200" step="10"><p class="visual-readout" id="dilutionReadout"></p></div>
+      </div>
+      <div class="quiz-card" id="quiz-4"><p class="question-text" id="qtext-4"></p><div class="options" id="options-4"></div><div class="action-row"><button class="btn btn-accent hidden" id="submitBtn-4" data-domain="4">Submit Answer</button></div><div class="confirm-box hidden" id="confirmBox-4"><p>Are you sure you want to submit this answer?</p><div class="confirm-actions"><button class="btn btn-primary" id="yesBtn-4" data-domain="4">Yes</button><button class="btn btn-ghost" id="noBtn-4" data-domain="4">No</button></div></div><div class="feedback hidden" id="feedback-4"></div></div>
+    </section>
+
+    <section class="slide" id="slide-6">
+      <div class="domain-header"><span class="domain-tag">Domain 6 of 6</span><h2>Integrated Pest Management (IPM)</h2></div>
+      <div class="domain-grid">
+        <div class="review-panel"><h3 class="umbrella">📊 Economic Decision-Making in IPM</h3><ul class="subtopics"><li><strong>Economic Injury Level (EIL)</strong> — the lowest pest density at which damage equals the cost of control.</li><li><strong>Economic Threshold (ET)</strong> — pest density at which action should be taken to prevent the EIL from being reached.</li><li><strong>IPM Tactics</strong> — prevention, monitoring, biological/cultural/physical control, and selective chemical use as a last resort.</li></ul></div>
+        <div class="visual-panel"><h4>Interactive: Economic Injury Level (EIL)</h4><svg viewBox="0 0 300 155"><line x1="25" y1="130" x2="280" y2="130" stroke="#b6c9af" stroke-width="2"/><line x1="25" y1="20" x2="25" y2="130" stroke="#b6c9af" stroke-width="2"/><line x1="25" y1="70" x2="280" y2="70" stroke="#d84315" stroke-width="2" stroke-dasharray="6 4"/><path d="M25,125 C95,123 145,105 185,75 C225,45 250,28 280,20" fill="none" stroke="#3f6b27" stroke-width="4"/><line id="eilIndicator" x1="120" y1="25" x2="120" y2="130" stroke="#f9a825" stroke-width="4"/><text x="28" y="65" font-size="10" fill="#d84315" font-weight="700">EIL: damage = control cost</text><text x="230" y="146" font-size="10" fill="#62705d">Pest Density</text></svg><input type="range" id="eilSlider" min="0" max="100" value="30"><p class="visual-readout" id="eilReadout"></p></div>
+      </div>
+      <div class="quiz-card" id="quiz-5"><p class="question-text" id="qtext-5"></p><div class="options" id="options-5"></div><div class="action-row"><button class="btn btn-accent hidden" id="submitBtn-5" data-domain="5">Submit Answer</button></div><div class="confirm-box hidden" id="confirmBox-5"><p>Are you sure you want to submit this answer?</p><div class="confirm-actions"><button class="btn btn-primary" id="yesBtn-5" data-domain="5">Yes</button><button class="btn btn-ghost" id="noBtn-5" data-domain="5">No</button></div></div><div class="feedback hidden" id="feedback-5"></div></div>
+    </section>
+
+    <section class="slide" id="slide-score">
+      <div class="score-card"><div class="intro-emoji">🎓</div><h1 style="margin:4px 0 0;font-size:1.3rem;color:var(--primary-dark);">Your Results</h1><div class="score-number" id="scoreNumber">0 / 6</div><p class="motivation" id="motivationText"></p><div class="rec-title">📌 Study Focus Recommendations</div><div id="recommendations"></div><button class="btn btn-accent btn-block" id="retakeBtn" style="margin-top:24px;">🔁 Retake Quiz (1 attempt available)</button></div>
+    </section>
+  </main>
+
+  <div class="navbar" id="navbar"><button class="btn btn-ghost" id="prevBtn">← Back</button><button class="btn btn-primary" id="nextBtn">Next →</button></div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+const primaryQuestions = [
+  {question:"Which element of the plant disease triangle is directly modified when a farmer plants a disease-resistant rice variety?",options:["Host susceptibility","Pathogen virulence","Environmental humidity","Inoculum dispersal route"],answer:"Host susceptibility",feedbackCorrect:"Correct! A resistant cultivar changes the host component of the disease triangle, making infection or colonization more difficult.",feedbackWrong:"Not quite. Planting a resistant variety modifies the <strong>host susceptibility</strong> component of the disease triangle.",calculation:null},
+  {question:"Which insect order contains insects with complete metamorphosis (egg-larva-pupa-adult), such as butterflies and moths?",options:["Lepidoptera","Hemiptera","Orthoptera","Isoptera"],answer:"Lepidoptera",feedbackCorrect:"Correct! Lepidoptera undergo complete metamorphosis; the larval caterpillar stage is commonly the damaging crop-feeding stage.",feedbackWrong:"Not quite. Butterflies and moths belong to <strong>Lepidoptera</strong>, an order with complete metamorphosis.",calculation:null},
+  {question:"The crop growth stage during which weed removal is most essential to avoid significant yield loss is termed the:",options:["Critical period of weed control","Weed-free period","Herbicide pre-emergence interval","Allelopathic window"],answer:"Critical period of weed control",feedbackCorrect:"Correct! The critical period is when weeds must be controlled so crop yield is protected from unacceptable competition losses.",feedbackWrong:"Not quite. The period in which weed removal is essential to prevent meaningful yield loss is the <strong>critical period of weed control</strong>.",calculation:null},
+  {question:"Which non-insect pest is characterized by adults with four pairs of legs, leaf stippling/bronzing, and often fine webbing on crops?",options:["Mites","Aphids","Thrips","Leafhoppers"],answer:"Mites",feedbackCorrect:"Correct! Mites are arachnids, not insects; adult mites have four pairs of legs and can cause stippling, bronzing, and webbing.",feedbackWrong:"Not quite. Four pairs of legs plus leaf stippling/webbing point to <strong>mites</strong>.",calculation:null},
+  {question:"A pesticide label recommends 20 mL of product per 16 L of water. How much product is needed to prepare 200 L of spray solution?",options:["250 mL","200 mL","320 mL","400 mL"],answer:"250 mL",feedbackCorrect:"Correct! Maintaining the label ratio requires 250 mL of product for 200 L of final spray solution.",feedbackWrong:"Not quite. Use a direct proportion based on the label rate of 20 mL per 16 L.",calculation:"Product Needed = (Label Product ÷ Label Water) × Tank Volume<br>= (20 mL ÷ 16 L) × 200 L<br>= 1.25 mL/L × 200 L = <strong>250 mL</strong>"},
+  {question:"For a pest with control cost (C) = PhP1,200/ha, crop value (V) = PhP25/kg, injury per insect (I) = 0.5 kg/insect, damage per unit injury (D) = 0.8, and control effectiveness (K) = 0.75, what is the Economic Injury Level (EIL)?",options:["160 insects/ha","80 insects/ha","120 insects/ha","240 insects/ha"],answer:"160 insects/ha",feedbackCorrect:"Correct! The EIL is 160 insects/ha; an economic threshold should be set below this to allow time for action before losses equal control costs.",feedbackWrong:"Not quite. Apply the EIL formula: C ÷ (V × I × D × K).",calculation:"EIL = C ÷ (V × I × D × K)<br>= 1,200 ÷ (25 × 0.5 × 0.8 × 0.75)<br>= 1,200 ÷ 7.5 = <strong>160 insects/ha</strong>"}
+];
+
+const retakeQuestions = [
+  {question:"Which pathogen group is composed of prokaryotic organisms and commonly causes water-soaked lesions, soft rots, and bacterial ooze?",options:["Bacteria","Fungi","Viruses","Nematodes"],answer:"Bacteria",feedbackCorrect:"Correct! Bacterial plant diseases often present as water-soaked spots, soft rots, wilts, and bacterial ooze.",feedbackWrong:"Not quite. Water-soaked lesions, soft rots, and bacterial streaming/ooze are typical signs of <strong>bacterial</strong> plant diseases.",calculation:null},
+  {question:"Aphids damage crops primarily through which type of mouthpart and feeding mechanism?",options:["Piercing-sucking mouthparts that remove phloem sap","Chewing mouthparts that remove leaf tissue","Rasping mouthparts that shred roots","Siphoning mouthparts that collect nectar"],answer:"Piercing-sucking mouthparts that remove phloem sap",feedbackCorrect:"Correct! Aphids use piercing-sucking stylets to extract phloem sap, causing curling/chlorosis and potentially transmitting viruses.",feedbackWrong:"Not quite. Aphids use <strong>piercing-sucking mouthparts</strong> to remove phloem sap.",calculation:null},
+  {question:"Which herbicide application timing refers to treatment after the crop and/or weeds have already emerged from the soil?",options:["Post-emergence", "Pre-emergence", "Pre-plant incorporated", "Dormant-season application"],answer:"Post-emergence",feedbackCorrect:"Correct! Post-emergence herbicides are applied after emergence; crop selectivity and weed growth stage are especially important.",feedbackWrong:"Not quite. Application after crop/weeds appear above ground is called <strong>post-emergence</strong> treatment.",calculation:null},
+  {question:"Root-knot disease in vegetables, characterized by galls or knots on roots, is caused by which group of plant pests?",options:["Plant-parasitic nematodes","Fungal pathogens","Mites","Rodents"],answer:"Plant-parasitic nematodes",feedbackCorrect:"Correct! Root-knot nematodes (Meloidogyne spp.) induce characteristic root galls that reduce uptake and vigor.",feedbackWrong:"Not quite. Root-knot galls are caused by <strong>plant-parasitic nematodes</strong>, particularly Meloidogyne species.",calculation:null},
+  {question:"A label directs 30 mL of pesticide per 15 L of water. How much pesticide concentrate is required for a 300-L spray tank?",options:["600 mL","450 mL","500 mL","750 mL"],answer:"600 mL",feedbackCorrect:"Correct! The label ratio is 2 mL/L, so 300 L requires 600 mL of pesticide concentrate.",feedbackWrong:"Not quite. Convert the label rate to mL per liter and multiply by total tank volume.",calculation:"Product Needed = (30 mL ÷ 15 L) × 300 L<br>= 2 mL/L × 300 L = <strong>600 mL</strong>"},
+  {question:"Using EIL = C ÷ (V × I × D × K), calculate EIL when C = PhP1,500/ha, V = PhP30/kg, I = 0.4 kg/insect, D = 0.5, and K = 0.8.",options:["312.5 insects/ha","156.25 insects/ha","250 insects/ha","375 insects/ha"],answer:"312.5 insects/ha",feedbackCorrect:"Correct! The EIL is 312.5 insects/ha — the pest density where expected crop loss value equals control cost.",feedbackWrong:"Not quite. Apply the full EIL formula carefully, multiplying all terms in the denominator.",calculation:"EIL = C ÷ (V × I × D × K)<br>= 1,500 ÷ (30 × 0.4 × 0.5 × 0.8)<br>= 1,500 ÷ 4.8 = <strong>312.5 insects/ha</strong>"}
+];
+
+const domainNames=["Plant Pathology","Entomology","Weed Science","Vertebrate & Other Non-Insect Pests","Pesticide Toxicology & Application","Integrated Pest Management (IPM)"];
+const recommendations=["Review the disease triangle, major pathogen groups, diagnostic signs/symptoms, and disease management through host resistance and environmental modification.","Study insect orders, complete vs. incomplete metamorphosis, mouthparts, damage symptoms, and beneficial insects.","Revisit critical periods of weed control, weed-crop competition, herbicide selectivity, and integrated weed management.","Review diagnosis and management of rodents, birds, mites, and plant-parasitic nematodes, especially root-knot nematodes.","Practice pesticide dilution/sprayer calibration calculations, learn toxicity classes and LD₅₀, and reinforce label/PPE safety rules.","Master IPM hierarchy, monitoring, Economic Threshold vs. Economic Injury Level, and EIL calculation using C ÷ (V×I×D×K)."];
+const LETTERS=["A","B","C","D"],NUM_DOMAINS=6;
+const state={current:0,isRetake:false,retakeUsed:false,answers:Array.from({length:NUM_DOMAINS},()=>({selected:null,confirmed:false,correct:null,correctIndex:null}))};
+function getQuestions(){return state.isRetake?retakeQuestions:primaryQuestions;}
+function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const tmp=a[i];a[i]=a[j];a[j]=tmp;}return a;}
+
+const slideEls=[document.getElementById('slide-0'),document.getElementById('slide-1'),document.getElementById('slide-2'),document.getElementById('slide-3'),document.getElementById('slide-4'),document.getElementById('slide-5'),document.getElementById('slide-6'),document.getElementById('slide-score')];
+const prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn'),navbar=document.getElementById('navbar'),progressBar=document.getElementById('progressBar'),progressLabel=document.getElementById('progressLabel');
+function renderSlideNav(){slideEls.forEach((el,i)=>el.classList.toggle('active',i===state.current));progressBar.style.width=(state.current/7*100)+'%';if(state.current===0)progressLabel.textContent='Introduction';else if(state.current<=NUM_DOMAINS)progressLabel.textContent='Question '+state.current+' of '+NUM_DOMAINS;else progressLabel.textContent='Results';prevBtn.style.visibility=state.current===0?'hidden':'visible';navbar.style.display=(state.current===0||state.current===7)?'none':'flex';nextBtn.textContent=state.current===NUM_DOMAINS?'See Results →':'Next →';}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),2400);}
+document.getElementById('startBtn').addEventListener('click',()=>{state.current=1;renderSlideNav();});
+prevBtn.addEventListener('click',()=>{if(state.current>0){state.current--;renderSlideNav();}});
+nextBtn.addEventListener('click',()=>{if(state.current>=1&&state.current<=NUM_DOMAINS){const d=state.current-1;if(!state.answers[d].confirmed){showToast('Please select an answer to proceed.');return;}}if(state.current===NUM_DOMAINS){computeScore();state.current=7;}else state.current++;renderSlideNav();});
+
+function renderDomain(d){const q=getQuestions()[d];document.getElementById('qtext-'+d).textContent=q.question;const shuffled=shuffle(q.options);state.answers[d].correctIndex=shuffled.indexOf(q.answer);const opts=document.getElementById('options-'+d);opts.innerHTML='';shuffled.forEach((opt,i)=>{const div=document.createElement('div');div.className='option-card';div.innerHTML='<span class="option-letter">'+LETTERS[i]+'</span><span>'+opt+'</span>';div.addEventListener('click',()=>selectOption(d,i));opts.appendChild(div);});document.getElementById('submitBtn-'+d).classList.add('hidden');document.getElementById('confirmBox-'+d).classList.add('hidden');const fb=document.getElementById('feedback-'+d);fb.classList.add('hidden');fb.classList.remove('feedback-correct','feedback-wrong');fb.innerHTML='';}
+function selectOption(d,i){const ans=state.answers[d];if(ans.confirmed)return;ans.selected=i;const opts=document.getElementById('options-'+d);[...opts.children].forEach((el,idx)=>el.classList.toggle('selected',idx===i));document.getElementById('submitBtn-'+d).classList.remove('hidden');document.getElementById('confirmBox-'+d).classList.add('hidden');}
+document.querySelectorAll('[id^="submitBtn-"]').forEach(btn=>btn.addEventListener('click',()=>{const d=+btn.dataset.domain;document.getElementById('confirmBox-'+d).classList.remove('hidden');btn.classList.add('hidden');}));
+document.querySelectorAll('[id^="noBtn-"]').forEach(btn=>btn.addEventListener('click',()=>{const d=+btn.dataset.domain;document.getElementById('confirmBox-'+d).classList.add('hidden');document.getElementById('submitBtn-'+d).classList.remove('hidden');}));
+document.querySelectorAll('[id^="yesBtn-"]').forEach(btn=>btn.addEventListener('click',()=>confirmAnswer(+btn.dataset.domain)));
+function confirmAnswer(d){const ans=state.answers[d],q=getQuestions()[d];ans.confirmed=true;ans.correct=ans.selected===ans.correctIndex;const opts=document.getElementById('options-'+d);[...opts.children].forEach((el,i)=>{el.classList.add('disabled');if(i===ans.correctIndex)el.classList.add('correct-answer');if(i===ans.selected&&!ans.correct)el.classList.add('wrong-answer');});document.getElementById('confirmBox-'+d).classList.add('hidden');const fb=document.getElementById('feedback-'+d);fb.classList.remove('hidden');fb.classList.add(ans.correct?'feedback-correct':'feedback-wrong');let html='<p class="feedback-title">'+(ans.correct?'✅ Correct!':'❌ Not quite.')+'</p><p>'+(ans.correct?q.feedbackCorrect:q.feedbackWrong)+'</p>';if(q.calculation)html+='<div class="calc-box"><strong>Step-by-step:</strong><br>'+q.calculation+'</div>';fb.innerHTML=html;fb.scrollIntoView({behavior:'smooth',block:'nearest'});}
+function computeScore(){const score=state.answers.filter(a=>a.correct).length;document.getElementById('scoreNumber').textContent=score+' / '+NUM_DOMAINS;const box=document.getElementById('recommendations');box.innerHTML='';const wrong=[];state.answers.forEach((a,i)=>{if(!a.correct)wrong.push(i);});if(!wrong.length)box.innerHTML='<div class="all-correct">🎉 Perfect score! No weak spots identified — keep maintaining your mastery across all six Crop Protection domains.</div>';else wrong.forEach(i=>{const div=document.createElement('div');div.className='rec-item';div.innerHTML='<strong>'+domainNames[i]+':</strong> '+recommendations[i];box.appendChild(div);});let msg=score===6?"Outstanding! You're exam-ready — keep sharpening speed and accuracy under timed conditions.":score===5?"Great job! You're almost there — polish up the one weak spot above before exam day.":score===4?"Solid performance! Review your weak domains below to lock in full mastery.":score===3?"Good foundation! You're halfway there — focus your review time on the domains flagged below.":score===2?"Keep going! Focus your review time on the domains flagged below.":"Don't be discouraged — every mistake today is a lesson learned before the real AgLE. Review the focus areas below and try again.";document.getElementById('motivationText').textContent=msg;const btn=document.getElementById('retakeBtn');btn.disabled=state.retakeUsed;btn.textContent=state.retakeUsed?'🔒 Retake already used':'🔁 Retake Quiz (1 attempt available)';}
+document.getElementById('retakeBtn').addEventListener('click',()=>{if(state.retakeUsed)return;state.retakeUsed=true;state.isRetake=true;state.answers=Array.from({length:NUM_DOMAINS},()=>({selected:null,confirmed:false,correct:null,correctIndex:null}));for(let i=0;i<NUM_DOMAINS;i++)renderDomain(i);state.current=1;renderSlideNav();});
+
+function initDisease(){const s=document.getElementById('diseaseSlider'),dot=document.getElementById('diseaseDot'),out=document.getElementById('diseaseReadout');function u(){const v=+s.value;const r=8+v*.13;dot.setAttribute('r',r);dot.setAttribute('fill',v<35?'#f9a825':v<70?'#ef6c00':'#c62828');const risk=v<35?'Low':v<70?'Moderate':'High';out.textContent='Conducive-factor score: '+v+'/100 → Disease risk: '+risk+'. Epidemics intensify only when a susceptible host, virulent pathogen, and favorable environment coincide.';}s.addEventListener('input',u);u();}
+function initInsects(){const wrap=document.getElementById('insectChips'),tip=document.getElementById('insectTooltip');const stages=[{n:'Egg',d:'Embryonic stage. Eggs may be laid singly or in masses on leaves, stems, or soil.'},{n:'Larva',d:'Active feeding stage of complete metamorphosis (e.g., caterpillar). Often causes the greatest defoliation damage.'},{n:'Pupa',d:'Non-feeding transformation stage within a cocoon or exposed chrysalis.'},{n:'Adult',d:'Reproductive stage. Adults may lay eggs, disperse, or feed depending on species.'},{n:'Nymph',d:'Immature stage in incomplete metamorphosis. Resembles a small adult but lacks fully developed wings/reproductive organs.'}];stages.forEach(s=>{const c=document.createElement('div');c.className='term-chip';c.textContent=s.n;c.addEventListener('click',()=>{tip.textContent=s.n+': '+s.d;tip.classList.add('show');});wrap.appendChild(c);});}
+function initWeeds(){const s=document.getElementById('weedSlider'),crop=document.getElementById('cropPlants'),weed=document.getElementById('weedPlants'),out=document.getElementById('weedReadout');function u(){const v=+s.value;crop.innerHTML='';weed.innerHTML='';const cropH=Math.max(25,75-v*.4);const wCount=Math.round(v/10);for(let i=0;i<6;i++){const x=38+i*43;const l=document.createElementNS('http://www.w3.org/2000/svg','line');l.setAttribute('x1',x);l.setAttribute('y1',105);l.setAttribute('x2',x);l.setAttribute('y2',105-cropH);l.setAttribute('stroke','#3f6b27');l.setAttribute('stroke-width','7');l.setAttribute('stroke-linecap','round');crop.appendChild(l);}for(let i=0;i<wCount;i++){const x=35+(i%10)*24;const h=18+(i%3)*8;const l=document.createElementNS('http://www.w3.org/2000/svg','line');l.setAttribute('x1',x);l.setAttribute('y1',105);l.setAttribute('x2',x+5);l.setAttribute('y2',105-h);l.setAttribute('stroke','#c62828');l.setAttribute('stroke-width','3');weed.appendChild(l);}const loss=Math.round(v*.55);out.textContent='Weed pressure: '+v+'% → illustrative crop yield-loss risk: '+loss+'%. Early weed competition for light, water, nutrients, and space can permanently reduce crop yield.';}s.addEventListener('input',u);u();}
+function initNonInsect(){const wrap=document.getElementById('nonInsectChips'),tip=document.getElementById('nonInsectTooltip');const pests=[{n:'Rodents',d:'Rats and mice consume grain, cut seedlings, burrow, and contaminate produce. Use sanitation, habitat management, traps, and coordinated community action.'},{n:'Mites',d:'Arachnids with four pairs of legs as adults. Damage includes stippling, bronzing, webbing, and leaf drop; flare-ups may follow broad-spectrum insecticide use.'},{n:'Nematodes',d:'Microscopic roundworms. Root-knot nematodes form galls; management includes resistant varieties, crop rotation, sanitation, and soil health practices.'},{n:'Birds',d:'Can cause significant damage in ripening rice, corn, and fruit crops. Netting, synchronized planting, and deterrents may help.'}];pests.forEach(p=>{const c=document.createElement('div');c.className='term-chip';c.textContent=p.n;c.addEventListener('click',()=>{tip.textContent=p.n+': '+p.d;tip.classList.add('show');});wrap.appendChild(c);});}
+function initDilution(){const s=document.getElementById('dilutionSlider'),label=document.getElementById('tankLabel'),out=document.getElementById('dilutionReadout');function u(){const vol=+s.value;const product=20/16*vol;label.textContent=vol+' L';out.textContent='Label rate: 20 mL per 16 L → Tank volume: '+vol+' L → Product needed: (20 ÷ 16) × '+vol+' = '+product.toFixed(0)+' mL. Always follow the specific product label and use appropriate PPE.';}s.addEventListener('input',u);u();}
+function initEIL(){const s=document.getElementById('eilSlider'),line=document.getElementById('eilIndicator'),out=document.getElementById('eilReadout');function u(){const v=+s.value;const x=25+v/100*255;line.setAttribute('x1',x);line.setAttribute('x2',x);let zone=v<38?'Below Economic Threshold: continue monitoring; use preventive/cultural/biological tactics.':v<55?'Economic Threshold zone: act now to prevent losses from reaching the EIL.':'At/above EIL: expected damage equals or exceeds control cost; intervention is economically justified.';out.textContent='Pest density indicator: '+v+'/100 → '+zone;}s.addEventListener('input',u);u();}
+for(let i=0;i<NUM_DOMAINS;i++)renderDomain(i);initDisease();initInsects();initWeeds();initNonInsect();initDilution();initEIL();renderSlideNav();
+</script>
+</body>
+</html>
